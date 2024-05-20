@@ -6,38 +6,38 @@ import wget
 from sys import argv
 
 
+x = []
+y = []
+
+
 # Устанавливаем дефолтное значение переменной file_name на случай запуска из програмных оболочек (я использовал pycharm)
 if(len(argv) == 1):
+    #сдесь будем брать файл с моего внешнего сервера где он хранится
     file_name = 'http://u1440187.isp.regruhosting.ru/EDM_lab/results.xml'
+    wget.download(file_name)
+    file_name = 'results.xml'
 else:
     # если len(argv) > 1 значит в консоль были переданны данные, значит запускаем сценарий с вводом из консоли
     namef = sys.argv[1]
-    file_name = 'http://u1440187.isp.regruhosting.ru/EDM_lab/' + namef
+    # если в консоль введено имя
+    file_name = namef
     print('Введенное имя файла: ' + str(sys.argv[1]))
 
 if(len(argv) == 3):
     # если в консоль был передан не обязательный параметр толщины линии
-    lineWidth = sys.argv[3]
+    lineWidth = sys.argv[2]
 else:
     # если не обязательный параметр не был введен в консоль
     print("Enter line thickness: ")
     lineWidth = input()
 
-x = []
-y = []
 
 
-try:
-    # Обработка подгрузчика файла (здесь используем wget для только загрузки файла)
-    wget.download(file_name)
-    # Черед minidom подгружаем таблицу данных results.xml
-    res = xml.dom.minidom.parse('results.xml')
-    parX = res.getElementsByTagName('x')
-    parY = res.getElementsByTagName('y')
-except:
-    parX = 0
-    parY = 0
-    print(-5)
+# Черед minidom подгружаем таблицу данных results.xml
+res = xml.dom.minidom.parse(file_name)
+parX = res.getElementsByTagName('x')
+parY = res.getElementsByTagName('y')
+
 
 
 for s in parX:
@@ -55,5 +55,6 @@ try:
 except:
     print(-2)
 
-#очищаем скаченый фал
+# очищаем скаченый фал
+# в случае если файл не скачивался, система не найдет такой файл и не вызвав ошибки ничего не очистит
 os.remove('results.xml')
