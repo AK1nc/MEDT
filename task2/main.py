@@ -15,8 +15,13 @@ else:
     file_name = 'http://u1440187.isp.regruhosting.ru/EDM_lab/' + namef
     print('Введенное имя файла: ' + str(sys.argv[1]))
 
-print("Enter line thickness: ")
-lineWidth = input()
+if(len(argv) == 3):
+    # если в консоль был передан не обязательный параметр толщины линии
+    lineWidth = sys.argv[3]
+else:
+    # если не обязательный параметр не был введен в консоль
+    print("Enter line thickness: ")
+    lineWidth = input()
 
 x = []
 y = []
